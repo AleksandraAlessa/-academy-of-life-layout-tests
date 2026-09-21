@@ -10,17 +10,17 @@ class TestLayout:
 
     @allure.title("Хедер виден")
     def test_header_visible(self, page: Page, base_url: str):
-        page.goto(base_url)
+        page.goto(base_url, wait_until="domcontentloaded")
         expect(page.locator("header").first).to_be_visible()
 
     @allure.title("Футер виден")
     def test_footer_visible(self, page: Page, base_url: str):
-        page.goto(base_url)
+        page.goto(base_url, wait_until="domcontentloaded")
         expect(page.locator("footer").first).to_be_visible()
 
     @allure.title("Нет горизонтального скролла")
     def test_no_horizontal_scroll(self, page: Page, base_url: str):
-        page.goto(base_url)
+        page.goto(base_url, wait_until="domcontentloaded")
         has_scroll = page.evaluate(
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"
         )
@@ -28,13 +28,13 @@ class TestLayout:
 
     @allure.title("Кнопка «Помочь» в хедере видна")
     def test_header_button(self, page: Page, base_url: str):
-        page.goto(base_url)
+        page.goto(base_url, wait_until="domcontentloaded")
         button = page.locator(".nheader__btn").first
         expect(button).to_be_visible()
 
     @allure.title("Все ссылки футера присутствуют")
     def test_footer_links(self, page: Page, base_url: str):
-        page.goto(base_url)
+        page.goto(base_url, wait_until="domcontentloaded")
         footer = page.locator("footer").first
         links_text = footer.locator("a").all_text_contents()
 

@@ -1,5 +1,6 @@
 """Тесты состояний (hover / focus)."""
 import allure
+import pytest
 from playwright.sync_api import Page
 from fixtures.design_tokens import COLORS, hex_to_rgb
 
@@ -9,8 +10,12 @@ from fixtures.design_tokens import COLORS, hex_to_rgb
 class TestStates:
 
     @allure.title("Кнопка «Помочь» меняет цвет при hover")
-    def test_button_hover(self, page: Page, base_url: str):
-        page.goto(base_url)
+    def test_button_hover(self, page: Page, base_url: str, viewport):
+        # На мобильных hover нет — пропускаем
+        if viewport["width"] < 992:
+            pytest.skip("Hover не работает на мобильных устройствах")
+
+        page.goto(base_url, wait_until="domcontentloaded")
         button = page.locator(".nheader__btn").first
 
         bg_before = button.evaluate("el => getComputedStyle(el).backgroundColor")
